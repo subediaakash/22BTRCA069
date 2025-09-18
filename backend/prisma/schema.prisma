@@ -1,0 +1,29 @@
+// datasource and generator
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model ShortUrl {
+    id          String   @id @default(cuid())
+    shortcode   String   @unique
+    originalUrl String
+    createdAt   DateTime @default(now())
+    expiresAt   DateTime
+    clicks      Click[]
+}
+
+model Click {
+    id         String   @id @default(cuid())
+    shortUrl   ShortUrl @relation(fields: [shortUrlId], references: [id], onDelete: Cascade)
+    shortUrlId String
+    clickedAt  DateTime @default(now())
+    referrer   String?
+    userAgent  String?
+    ip         String?
+    country    String?
+}
