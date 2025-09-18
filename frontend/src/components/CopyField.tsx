@@ -19,6 +19,7 @@ export default function CopyField({ label, value }: { label: string; value: stri
     <Box>
       <TextField
         fullWidth
+        size="medium"
         label={label}
         value={value}
         InputProps={{
@@ -26,7 +27,7 @@ export default function CopyField({ label, value }: { label: string; value: stri
           endAdornment: (
             <InputAdornment position="end">
               <Tooltip title={copied ? 'Copied!' : 'Copy'}>
-                <IconButton aria-label="copy" onClick={onCopy} edge="end">
+                <IconButton aria-label="copy" onClick={onCopy} edge="end" color={copied ? 'success' : 'default'}>
                   <ContentCopyIcon />
                 </IconButton>
               </Tooltip>

@@ -11,8 +11,8 @@ export type ClickRow = {
 export default function StatsTable({ rows }: { rows: ClickRow[] }) {
   if (!rows.length) return null
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
+    <TableContainer component={Paper} sx={{ maxHeight: 420 }}>
+      <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>Time</TableCell>
@@ -24,7 +24,7 @@ export default function StatsTable({ rows }: { rows: ClickRow[] }) {
         </TableHead>
         <TableBody>
           {rows.map((r, idx) => (
-            <TableRow key={idx}>
+            <TableRow key={idx} sx={{ '&:nth-of-type(odd)': { backgroundColor: 'action.hover' } }}>
               <TableCell>{new Date(r.timestamp).toLocaleString()}</TableCell>
               <TableCell>{r.referer ?? '-'}</TableCell>
               <TableCell>{r.userAgent ?? '-'}</TableCell>

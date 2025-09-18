@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { Alert, Box, Button, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, Paper, Stack, TextField, Typography, InputAdornment } from '@mui/material'
+import LinkIcon from '@mui/icons-material/Link'
+import TimerIcon from '@mui/icons-material/Timer'
+import TagIcon from '@mui/icons-material/Tag'
 import CopyField from '../components/CopyField'
 import { createShortUrl } from '../services/shortUrls'
 
@@ -35,12 +38,15 @@ export default function ShortenPage() {
   }
 
   return (
-    <Box component={Paper} sx={{ p: 3 }}>
-      <Typography variant="h5" gutterBottom>
-        Create a short link
+    <Box component={Paper} sx={{ p: { xs: 2, sm: 3 }, backdropFilter: 'blur(6px)' }}>
+      <Typography variant="h4" sx={{ fontWeight: 800 }} gutterBottom>
+        Shorten your links
+      </Typography>
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+        Create branded short links with optional expiry and custom aliases.
       </Typography>
       <Box component="form" onSubmit={onSubmit}>
-        <Stack spacing={2}>
+        <Stack spacing={2.5}>
           <TextField
             label="Original URL"
             value={url}
@@ -48,6 +54,7 @@ export default function ShortenPage() {
             placeholder="https://example.com/very/long/path"
             required
             fullWidth
+            InputProps={{ startAdornment: (<InputAdornment position="start"><LinkIcon color="action" /></InputAdornment>) }}
           />
           <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
             <TextField
@@ -56,8 +63,10 @@ export default function ShortenPage() {
               value={validity}
               onChange={(e) => setValidity(e.target.value === '' ? '' : Number(e.target.value))}
               placeholder="30"
+              helperText="Leave blank for no expiry"
               inputProps={{ min: 1 }}
               fullWidth
+              InputProps={{ startAdornment: (<InputAdornment position="start"><TimerIcon color="action" /></InputAdornment>) }}
             />
             <TextField
               label="Custom shortcode (optional)"
@@ -65,16 +74,17 @@ export default function ShortenPage() {
               onChange={(e) => setShortcode(e.target.value)}
               placeholder="myalias123"
               fullWidth
+              InputProps={{ startAdornment: (<InputAdornment position="start"><TagIcon color="action" /></InputAdornment>) }}
             />
           </Stack>
           <Box>
-            <Button variant="contained" type="submit" disabled={loading}>
+            <Button size="large" variant="contained" type="submit" disabled={loading}>
               {loading ? 'Creating...' : 'Create Short URL'}
             </Button>
           </Box>
           {error && <Alert severity="error">{error}</Alert>}
           {shortLink && (
-            <Stack spacing={1}>
+            <Stack spacing={1.5}>
               <CopyField label="Your short link" value={shortLink} />
               {expiry && (
                 <Typography variant="body2" color="text.secondary">
